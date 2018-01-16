@@ -11,7 +11,6 @@ eureka:
         serviceUrl:
             defaultZone: http://gimp-discovery:8047/eureka/
             
-
 #log4j2路径配置        
 logging:
     config: classpath:log4j2.xml
