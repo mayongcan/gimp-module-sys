@@ -3,7 +3,7 @@ package com.gimplatform.module.sys.restful;
 import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 
-import org.apache.commons.collections.MapUtils;
+import org.apache.commons.collections4.MapUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
