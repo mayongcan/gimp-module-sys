@@ -19,50 +19,44 @@ import org.springframework.security.oauth2.provider.token.store.redis.RedisToken
 /**
  * 资源服务器配置
  * @author zzd
- *
  */
 @Configuration
 @EnableResourceServer
 public class ResourceServerConfiguration extends ResourceServerConfigurerAdapter {
-	
-	protected final Logger logger =  LoggerFactory.getLogger(this.getClass());
 
-	private static final String RESOURCE_ID = "GIMP_RES_SYS";
+    protected final Logger logger = LoggerFactory.getLogger(this.getClass());
 
-	@Autowired
-	private RedisConnectionFactory redisConnection;
-	
-	@Override
-	public void configure(ResourceServerSecurityConfigurer resources) {
-		resources.tokenServices(tokenServices()).resourceId(RESOURCE_ID);
-	}
+    private static final String RESOURCE_ID = "GIMP_RES_SYS";
 
-	@Override
-	public void configure(HttpSecurity http) throws Exception {
-		logger.info("Initializing Auth Resource Server Configuration ");
-		http.anonymous().disable()
-			.requestMatchers().antMatchers("/**")
-			.and()
-			.authorizeRequests().antMatchers("/api*/**").permitAll()
-			.and()
-			.exceptionHandling().accessDeniedHandler(new OAuth2AccessDeniedHandler());
-		
-//		http.anonymous().disable()
-//			.requestMatchers().antMatchers("/api*/**")
-//			.and().authorizeRequests()
-//			.antMatchers("/api*/**").permitAll()
-//			.and().exceptionHandling().accessDeniedHandler(new OAuth2AccessDeniedHandler());
-	}
-	
+    @Autowired
+    private RedisConnectionFactory redisConnection;
+
+    @Override
+    public void configure(ResourceServerSecurityConfigurer resources) {
+        resources.tokenServices(tokenServices()).resourceId(RESOURCE_ID);
+    }
+
+    @Override
+    public void configure(HttpSecurity http) throws Exception {
+        logger.info("Initializing Auth Resource Server Configuration ");
+        http.anonymous().disable().requestMatchers().antMatchers("/**").and().authorizeRequests().antMatchers("/api*/**").permitAll().and().exceptionHandling().accessDeniedHandler(new OAuth2AccessDeniedHandler());
+
+        // http.anonymous().disable()
+        // .requestMatchers().antMatchers("/api*/**")
+        // .and().authorizeRequests()
+        // .antMatchers("/api*/**").permitAll()
+        // .and().exceptionHandling().accessDeniedHandler(new OAuth2AccessDeniedHandler());
+    }
+
     /**
      * 将token写入redis
      * @return
      */
-	@Bean
-	public TokenStore tokenStore() {
-		return new RedisTokenStore(redisConnection);
-	}
-    
+    @Bean
+    public TokenStore tokenStore() {
+        return new RedisTokenStore(redisConnection);
+    }
+
     @Bean
     @Primary
     public DefaultTokenServices tokenServices() {
@@ -70,24 +64,24 @@ public class ResourceServerConfiguration extends ResourceServerConfigurerAdapter
         defaultTokenServices.setTokenStore(tokenStore());
         return defaultTokenServices;
     }
-	
-//	/**
-//	 * 转换Jwt格式token
-//	 * @return
-//	 */
-//    @Bean
-//    public JwtAccessTokenConverter accessTokenConverter() {
-//        JwtAccessTokenConverter converter = new JwtAccessTokenConverter();
-//        converter.setSigningKey("gimplatform");
-//        return converter;
-//    }
 
-//  /**
-//   * 生成JWT格式token
-//   * @return
-//   */
-//  @Bean
-//  public TokenStore tokenStore() {
-//      return new JwtTokenStore(accessTokenConverter());
-//  }
+    // /**
+    // * 转换Jwt格式token
+    // * @return
+    // */
+    // @Bean
+    // public JwtAccessTokenConverter accessTokenConverter() {
+    // JwtAccessTokenConverter converter = new JwtAccessTokenConverter();
+    // converter.setSigningKey("gimplatform");
+    // return converter;
+    // }
+
+    // /**
+    // * 生成JWT格式token
+    // * @return
+    // */
+    // @Bean
+    // public TokenStore tokenStore() {
+    // return new JwtTokenStore(accessTokenConverter());
+    // }
 }

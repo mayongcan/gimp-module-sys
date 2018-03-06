@@ -15,9 +15,8 @@ import com.alibaba.druid.pool.DruidDataSource;
 /**
  * 数据源配置
  * @author zzd
- *
  */
-//@Configuration
+// @Configuration
 public class DataSourceConfiguration {
 
     private static final Logger logger = LogManager.getLogger(DataSourceConfiguration.class);
@@ -82,7 +81,7 @@ public class DataSourceConfiguration {
     @Bean
     @Primary
     public DataSource dataSource() {
-		logger.info("初始化数据源...");
+        logger.info("初始化数据源...");
         DruidDataSource datasource = new DruidDataSource();
         datasource.setUrl(this.dbUrl);
         datasource.setUsername(username);
@@ -101,7 +100,7 @@ public class DataSourceConfiguration {
         datasource.setTestOnReturn(testOnReturn);
         datasource.setPoolPreparedStatements(poolPreparedStatements);
         datasource.setMaxPoolPreparedStatementPerConnectionSize(maxPoolPreparedStatementPerConnectionSize);
-        //datasource.setUseGlobalDataSourceStat(useGlobalDataSourceStat);
+        // datasource.setUseGlobalDataSourceStat(useGlobalDataSourceStat);
         try {
             datasource.setFilters(filters);
         } catch (SQLException e) {

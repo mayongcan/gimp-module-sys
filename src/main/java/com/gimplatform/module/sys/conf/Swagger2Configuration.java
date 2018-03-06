@@ -19,47 +19,36 @@ import springfox.documentation.spring.web.plugins.Docket;
 /**
  * 整合Swagger2
  * @author zzd
- *
  */
-//@Configuration
-//@EnableSwagger2
+// @Configuration
+// @EnableSwagger2
 public class Swagger2Configuration {
-    
+
     /**
      * 创建api文档工具
      * @return
      */
-	@Bean
-    public Docket createRestApi() { 
-		Predicate<RequestHandler> predicate = new Predicate<RequestHandler>() {
+    @Bean
+    public Docket createRestApi() {
+        Predicate<RequestHandler> predicate = new Predicate<RequestHandler>() {
             @Override
             public boolean apply(RequestHandler input) {
                 Class<?> declaringClass = input.declaringClass();
                 if (declaringClass == BasicErrorController.class)// 排除
                     return false;
-                if(declaringClass.isAnnotationPresent(RestController.class)) // 被注解的类
+                if (declaringClass.isAnnotationPresent(RestController.class)) // 被注解的类
                     return true;
-                if(input.isAnnotatedWith(ResponseBody.class)) // 被注解的方法
+                if (input.isAnnotatedWith(ResponseBody.class)) // 被注解的方法
                     return true;
                 return false;
             }
         };
-		return new Docket(DocumentationType.SWAGGER_2)
-            .apiInfo(apiInfo())
-            .select()
-            .apis(predicate)
-            .apis(RequestHandlerSelectors.basePackage("com.gimplatform.module.sys.restful"))
-            .paths(PathSelectors.any())
-            .build();                                   
+        return new Docket(DocumentationType.SWAGGER_2).apiInfo(apiInfo()).select().apis(predicate).apis(RequestHandlerSelectors.basePackage("com.gimplatform.module.sys.restful")).paths(PathSelectors.any()).build();
     }
-	
-	private ApiInfo apiInfo() {
-        return new ApiInfoBuilder()
-	        .title("通用信息管理平台--RESTful APIs")
-	        .description("通用信息管理平台(系统功能接口)")
-	        //.termsOfServiceUrl("")
-	        .contact(new Contact("zzd", "", "zzhdong@gmail.com"))
-	        .version("1.0.2")
-	        .build();
+
+    private ApiInfo apiInfo() {
+        return new ApiInfoBuilder().title("通用信息管理平台--RESTful APIs").description("通用信息管理平台(系统功能接口)")
+                // .termsOfServiceUrl("")
+                .contact(new Contact("zzd", "", "zzhdong@gmail.com")).version("1.0.2").build();
     }
 }

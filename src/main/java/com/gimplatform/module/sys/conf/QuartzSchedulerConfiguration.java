@@ -23,9 +23,9 @@ import java.util.Properties;
 @Configuration
 @ConditionalOnProperty(name = "quartz.enabled")
 public class QuartzSchedulerConfiguration {
-	
+
     @Bean
-    public JobFactory jobFactory(ApplicationContext applicationContext){
+    public JobFactory jobFactory(ApplicationContext applicationContext) {
         AutowiringSpringBeanJobFactory jobFactory = new AutowiringSpringBeanJobFactory();
         jobFactory.setApplicationContext(applicationContext);
         return jobFactory;
@@ -37,7 +37,7 @@ public class QuartzSchedulerConfiguration {
         factory.setOverwriteExistingJobs(true);
         factory.setDataSource(dataSource);
         factory.setJobFactory(jobFactory);
-        //factory.setAutoStartup(true);
+        // factory.setAutoStartup(true);
         factory.setQuartzProperties(quartzProperties());
         return factory;
     }
@@ -51,7 +51,7 @@ public class QuartzSchedulerConfiguration {
     }
 
     @SuppressWarnings("rawtypes")
-	public static JobDetailFactoryBean createJobDetail(Class jobClass) {
+    public static JobDetailFactoryBean createJobDetail(Class jobClass) {
         JobDetailFactoryBean factoryBean = new JobDetailFactoryBean();
         factoryBean.setJobClass(jobClass);
         factoryBean.setDurability(true);

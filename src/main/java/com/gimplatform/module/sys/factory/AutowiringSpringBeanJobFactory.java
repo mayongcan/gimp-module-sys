@@ -9,10 +9,8 @@ import org.springframework.scheduling.quartz.SpringBeanJobFactory;
 /**
  * 任务调度
  * @author zzd
- *
  */
-public final class AutowiringSpringBeanJobFactory extends SpringBeanJobFactory implements
-        ApplicationContextAware {
+public final class AutowiringSpringBeanJobFactory extends SpringBeanJobFactory implements ApplicationContextAware {
 
     private transient AutowireCapableBeanFactory beanFactory;
 
