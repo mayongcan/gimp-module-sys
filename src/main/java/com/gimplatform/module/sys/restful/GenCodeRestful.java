@@ -264,7 +264,7 @@ public class GenCodeRestful {
                 sb.append("COMMIT;\r\n");
                 // 插入自增表
                 sb.append("\r\nBEGIN;\r\n");
-                sb.append("INSERT INTO sys_tb_generator(ID, GEN_TABLE, GEN_PRIMARY_KEY, GEN_NAME, GEN_VALUE)");
+                sb.append("INSERT INTO sys_tb_generator(ID, GEN_TABLE, GEN_PRIMARY_KEY, GEN_NAME, GEN_VALUE) ");
                 sb.append("SELECT ((SELECT MAX(ID) FROM sys_tb_generator) + 1) AS ID, '" + tableName + "' AS GEN_TABLE, '" + privateKey.replace("`", "") + "' AS GEN_PRIMARY_KEY, '" + tableName.toUpperCase() + "_PK"
                         + "' AS GEN_NAME, '1' AS GEN_VALUE;\r\n");
                 // sb.append("INSERT INTO `sys_tb_generator` VALUES ('" + maxId + "', '" + tableName + "', '" + privateKey.replace("`", "") + "', '" + tableName.toUpperCase() + "_PK" + "', '1');\r\n");
