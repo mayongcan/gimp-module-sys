@@ -307,10 +307,10 @@ public class GenCodeRestful {
                 String tableNameCase = StringUtils.toCamelCase(tableName);
                 // 构造权限了列表（菜单，新增、编辑、修改三个默认权限）
                 List<Map<String, Object>> listFunc = new ArrayList<Map<String, Object>>();
-                listFunc.add(getFunMapInfo("10000_", moduleName, "9999_", 100, "100300", "2", pagePath, restfulPath + "/index", "Y", "N", "", moduleName, "N"));
-                listFunc.add(getFunMapInfo("10001_", "新增", "10000_", 1, "100400", "3", restfulPath + "/add", tableNameCase + "Add", "Y", "N", "glyphicon glyphicon-plus", "新增数据", "N"));
-                listFunc.add(getFunMapInfo("10002_", "编辑", "10000_", 2, "100400", "3", restfulPath + "/edit", tableNameCase + "Edit", "Y", "N", "glyphicon glyphicon-edit", "编辑数据", "N"));
-                listFunc.add(getFunMapInfo("10003_", "删除", "10000_", 3, "100400", "3", restfulPath + "/del", tableNameCase + "Del", "Y", "N", "glyphicon glyphicon-trash", "删除数据", "N"));
+                listFunc.add(getFunMapInfo("10000_", moduleName, "9999_", 100, "100300", "2", pagePath, restfulPath + "/index", "1", "Y", "N", "", moduleName, "N"));
+                listFunc.add(getFunMapInfo("10001_", "新增", "10000_", 1, "100400", "3", restfulPath + "/add", tableNameCase + "Add", "1", "Y", "N", "glyphicon glyphicon-plus", "新增数据", "N"));
+                listFunc.add(getFunMapInfo("10002_", "编辑", "10000_", 2, "100400", "3", restfulPath + "/edit", tableNameCase + "Edit", "2", "Y", "N", "glyphicon glyphicon-edit", "编辑数据", "N"));
+                listFunc.add(getFunMapInfo("10003_", "删除", "10000_", 3, "100400", "3", restfulPath + "/del", tableNameCase + "Del", "2", "Y", "N", "glyphicon glyphicon-trash", "删除数据", "N"));
                 JSONObject json = new JSONObject();
                 json.put("RetData", funcInfoService.getJsonTree(listFunc, "9999_"));
                 String funcXml = JsonUtils.jsonToXml(json);
@@ -331,8 +331,8 @@ public class GenCodeRestful {
         }
     }
 
-    private Map<String, Object> getFunMapInfo(String funcId, String funcName, String parentFuncId, int dispOrder, String funcType, String funcLevel, String funcLink, String funcFlag, String isShow, String isBlank, String funcIcon, String funcDesc,
-            String isBase) {
+    private Map<String, Object> getFunMapInfo(String funcId, String funcName, String parentFuncId, int dispOrder, String funcType, String funcLevel, String funcLink, String funcFlag, String dispPosition, 
+            String isShow, String isBlank, String funcIcon, String funcDesc, String isBase) {
         Map<String, Object> menuMap = new HashMap<String, Object>();
         menuMap.put("funcId", funcId);
         menuMap.put("funcName", funcName);
@@ -342,6 +342,7 @@ public class GenCodeRestful {
         menuMap.put("funcLevel", funcLevel);
         menuMap.put("funcLink", funcLink);
         menuMap.put("funcFlag", funcFlag);
+        menuMap.put("dispPosition", dispPosition);
         menuMap.put("isShow", isShow);
         menuMap.put("isBlank", isBlank);
         menuMap.put("funcIcon", funcIcon);
