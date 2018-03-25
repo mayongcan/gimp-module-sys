@@ -197,7 +197,7 @@ public class UsersRestful {
         String funcPid = request.getParameter("funcPid");
         if (StringUtils.isBlank(funcPid)) {
             json = RestfulRetUtils.getErrorParams();
-            logger.error("传递参数有误，funcPid无效");
+            logger.warn("传递参数有误，权限菜单父ID[funcPid]为空！");
             return json;
         }
         try {
