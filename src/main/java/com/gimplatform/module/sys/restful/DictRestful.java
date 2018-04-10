@@ -22,6 +22,7 @@ import com.gimplatform.core.entity.DictType;
 import com.gimplatform.core.entity.UserInfo;
 import com.gimplatform.core.service.DictService;
 import com.gimplatform.core.service.DistrictService;
+import com.gimplatform.core.utils.BeanUtils;
 import com.gimplatform.core.utils.RestfulRetUtils;
 import com.gimplatform.core.utils.SessionUtils;
 
@@ -89,10 +90,7 @@ public class DictRestful {
                 json = RestfulRetUtils.getErrorNoUser();
             else {
                 Pageable pageable = new PageRequest(SessionUtils.getPageIndex(request), SessionUtils.getPageSize(request));
-                DictType dictType = new DictType();
-                dictType.setName(MapUtils.getString(params, "searchName"));
-                dictType.setValue(MapUtils.getString(params, "searchValue"));
-                dictType.setShareType(MapUtils.getString(params, "searchType"));
+                DictType dictType = (DictType) BeanUtils.mapToBean(params, DictType.class);
                 Page<DictType> dictList = dictService.getDictTypeList(pageable, dictType);
                 json = RestfulRetUtils.getRetSuccessWithPage(dictList.getContent(), dictList.getTotalElements());
             }
@@ -241,12 +239,7 @@ public class DictRestful {
             if (userInfo == null)
                 json = RestfulRetUtils.getErrorNoUser();
             else {
-                DictData dictData = new DictData();
-                dictData.setDictTypeId(MapUtils.getLong(params, "dictTypeId"));
-                dictData.setName(MapUtils.getString(params, "name"));
-                dictData.setValue(MapUtils.getString(params, "value"));
-                dictData.setDictDesc(MapUtils.getString(params, "dictDesc"));
-                dictData.setDispOrder(MapUtils.getLong(params, "dispOrder"));
+                DictData dictData = (DictData) BeanUtils.mapToBean(params, DictData.class);
                 String dataShare = MapUtils.getString(params, "dataShare");
                 json = dictService.addDictDataType(dictData, userInfo, dataShare);
             }
@@ -271,13 +264,7 @@ public class DictRestful {
             if (userInfo == null)
                 json = RestfulRetUtils.getErrorNoUser();
             else {
-                DictData dictData = new DictData();
-                dictData.setDictDataId(MapUtils.getLong(params, "dictDataId"));
-                dictData.setDictTypeId(MapUtils.getLong(params, "dictTypeId"));
-                dictData.setName(MapUtils.getString(params, "name"));
-                dictData.setValue(MapUtils.getString(params, "value"));
-                dictData.setDictDesc(MapUtils.getString(params, "dictDesc"));
-                dictData.setDispOrder(MapUtils.getLong(params, "dispOrder"));
+                DictData dictData = (DictData) BeanUtils.mapToBean(params, DictData.class);
                 String dataShare = MapUtils.getString(params, "dataShare");
                 json = dictService.editDictDataType(dictData, userInfo, dataShare);
             }
@@ -311,4 +298,26 @@ public class DictRestful {
         return json;
     }
 
+    /**
+     * 更新排序
+     * @param request
+     * @param params
+     * @return
+     */
+    @RequestMapping(value = "/updateDictDataSort", method = RequestMethod.POST)
+    public JSONObject updateDictDataSort(HttpServletRequest request, @RequestBody String params) {
+        JSONObject json = new JSONObject();
+        try {
+            UserInfo userInfo = SessionUtils.getUserInfo();
+            if (userInfo == null)
+                json = RestfulRetUtils.getErrorNoUser();
+            else {
+                json = dictService.updateDictDataSort(params);
+            }
+        } catch (Exception e) {
+            json = RestfulRetUtils.getErrorMsg("22011", "更新字典排序失败");
+            logger.error(e.getMessage(), e);
+        }
+        return json;
+    }
 }
