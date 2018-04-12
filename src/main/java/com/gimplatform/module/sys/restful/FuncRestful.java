@@ -8,6 +8,7 @@ import org.apache.commons.collections4.MapUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -16,8 +17,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.gimplatform.core.entity.FuncInfo;
 import com.gimplatform.core.entity.UserInfo;
 import com.gimplatform.core.service.FuncInfoService;
@@ -45,6 +48,28 @@ public class FuncRestful {
     @RequestMapping(value = "/index", method = RequestMethod.GET)
     public JSONObject index(HttpServletRequest request) {
         return RestfulRetUtils.getRetSuccess();
+    }
+    
+    /**
+     * 获取所有权限列表
+     * @param request
+     * @param response
+     * @return
+     */
+    @RequestMapping(value = "/getFuncList", method = RequestMethod.GET)
+    public JSONArray getFuncList(HttpServletRequest request, @RequestParam Map<String, Object> params) {
+        JSONArray json = new JSONArray();
+        try {
+            UserInfo userInfo = SessionUtils.getUserInfo();
+            if (userInfo != null) {
+                Page<FuncInfo> pageList = funcInfoService.getFuncList(params);
+                JSON.DEFFAULT_DATE_FORMAT = "yyyy-MM-dd HH:mm:ss";
+                json = JSONObject.parseArray(JSON.toJSONString(pageList.getContent(), SerializerFeature.WriteDateUseDateFormat));
+            }
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
+        }
+        return json;
     }
 
     /**
