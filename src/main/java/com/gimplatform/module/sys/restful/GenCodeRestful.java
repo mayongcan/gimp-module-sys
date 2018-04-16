@@ -303,14 +303,14 @@ public class GenCodeRestful {
                 String tableName = genCode.getTableName();
                 String moduleName = genCode.getModuleName();
                 String restfulPath = genCode.getRestfulPath();
-                String pagePath = genCode.getPagePath() + "/" + tableName.toLowerCase().replace("_", "") + ".html";
+                String pagePath = genCode.getPagePath() + "/" + tableName.toLowerCase().replace("_", "-") + ".html";
                 String tableNameCase = StringUtils.toCamelCase(tableName);
                 // 构造权限了列表（菜单，新增、编辑、修改三个默认权限）
                 List<Map<String, Object>> listFunc = new ArrayList<Map<String, Object>>();
-                listFunc.add(getFunMapInfo("10000_", moduleName, "9999_", 100, "100300", "2", pagePath, restfulPath + "/index", "1", "Y", "N", "", moduleName, "N"));
-                listFunc.add(getFunMapInfo("10001_", "新增", "10000_", 1, "100400", "3", restfulPath + "/add", tableNameCase + "Add", "1", "Y", "N", "glyphicon glyphicon-plus", "新增数据", "N"));
-                listFunc.add(getFunMapInfo("10002_", "编辑", "10000_", 2, "100400", "3", restfulPath + "/edit", tableNameCase + "Edit", "2", "Y", "N", "glyphicon glyphicon-edit", "编辑数据", "N"));
-                listFunc.add(getFunMapInfo("10003_", "删除", "10000_", 3, "100400", "3", restfulPath + "/del", tableNameCase + "Del", "2", "Y", "N", "glyphicon glyphicon-trash", "删除数据", "N"));
+                listFunc.add(getFunMapInfo("10000_", moduleName, "9999_", 100, "100300", "2", pagePath, restfulPath + "/index", "1", "Y", "N", "", "", "N"));
+                listFunc.add(getFunMapInfo("10001_", "新增", "10000_", 1, "100400", "3", restfulPath + "/add", tableNameCase + "Add", "1", "Y", "N", "glyphicon glyphicon-plus", "", "N"));
+                listFunc.add(getFunMapInfo("10002_", "编辑", "10000_", 2, "100400", "3", restfulPath + "/edit", tableNameCase + "Edit", "2", "Y", "N", "glyphicon glyphicon-edit", "", "N"));
+                listFunc.add(getFunMapInfo("10003_", "删除", "10000_", 3, "100400", "3", restfulPath + "/del", tableNameCase + "Del", "2", "Y", "N", "glyphicon glyphicon-trash", "", "N"));
                 JSONObject json = new JSONObject();
                 json.put("RetData", funcInfoService.getJsonTree(listFunc, "9999_"));
                 String funcXml = JsonUtils.jsonToXml(json);
