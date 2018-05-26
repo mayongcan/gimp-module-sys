@@ -186,6 +186,53 @@ public class MessageInfoRestful {
     }
 
     /**
+     * 发送消息
+     * @param request
+     * @param idsList
+     * @return
+     */
+    @RequestMapping(value = "/revoke", method = RequestMethod.POST)
+    public JSONObject revoke(HttpServletRequest request, @RequestBody String idsList) {
+        JSONObject json = new JSONObject();
+        try {
+            UserInfo userInfo = SessionUtils.getUserInfo();
+            if (userInfo == null)
+                json = RestfulRetUtils.getErrorNoUser();
+            else {
+                json = messageInfoService.revoke(idsList, userInfo);
+            }
+        } catch (Exception e) {
+            json = RestfulRetUtils.getErrorMsg("51004", "发送消息失败");
+            logger.error(e.getMessage(), e);
+        }
+        return json;
+    }
+    
+    /**
+     * 获取消息详情列表（指某条消息的所有发送情况）
+     * @param request
+     * @param params
+     * @return
+     */
+    @RequestMapping(value = "/getMessageDetailList", method = RequestMethod.GET)
+    public JSONObject getMessageDetailList(HttpServletRequest request, @RequestParam Map<String, Object> params) {
+        JSONObject json = new JSONObject();
+        try {
+            UserInfo userInfo = SessionUtils.getUserInfo();
+            if (userInfo == null)
+                json = RestfulRetUtils.getErrorNoUser();
+            else {
+                Pageable pageable = new PageRequest(SessionUtils.getPageIndex(request), SessionUtils.getPageSize(request));
+                json = messageInfoService.getMessageDetailList(pageable, params);
+            }
+        } catch (Exception e) {
+            json = RestfulRetUtils.getErrorMsg("51001", "获取我的消息失败");
+            logger.error(e.getMessage(), e);
+        }
+        return json;
+    }
+
+    /**
      * 获取我的消息
      * @param request
      * @return
