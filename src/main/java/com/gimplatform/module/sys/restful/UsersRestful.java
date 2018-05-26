@@ -532,6 +532,62 @@ public class UsersRestful {
     }
 
     /**
+     * 更新支付密码
+     * @param request
+     * @param map
+     * @return
+     */
+    @RequestMapping(value = "/updatePayPassword", method = RequestMethod.POST)
+    public JSONObject updatePayPassword(HttpServletRequest request, @RequestBody Map<String, Object> map) {
+        JSONObject json = new JSONObject();
+        try {
+            UserInfo loginUser = SessionUtils.getUserInfo();
+            if (loginUser == null)
+                json = RestfulRetUtils.getErrorNoUser();
+            else {
+                String payPassword = MapUtils.getString(map, "payPassword");
+                if (StringUtils.isBlank(payPassword)) {
+                    json = RestfulRetUtils.getErrorParams();
+                } else {
+                    json = userInfoService.updatePayPassword(loginUser.getUserId(), payPassword);
+                }
+            }
+        } catch (Exception e) {
+            json = RestfulRetUtils.getErrorMsg("200013", "设置租户管理员失败");
+            logger.error(e.getMessage(), e);
+        }
+        return json;
+    }
+
+    /**
+     * 更新安全密码
+     * @param request
+     * @param map
+     * @return
+     */
+    @RequestMapping(value = "/updateSafetyPassword", method = RequestMethod.POST)
+    public JSONObject updateSafetyPassword(HttpServletRequest request, @RequestBody Map<String, Object> map) {
+        JSONObject json = new JSONObject();
+        try {
+            UserInfo loginUser = SessionUtils.getUserInfo();
+            if (loginUser == null)
+                json = RestfulRetUtils.getErrorNoUser();
+            else {
+                String safetyPassword = MapUtils.getString(map, "safetyPassword");
+                if (StringUtils.isBlank(safetyPassword)) {
+                    json = RestfulRetUtils.getErrorParams();
+                } else {
+                    json = userInfoService.updateSafetyPassword(loginUser.getUserId(), safetyPassword);
+                }
+            }
+        } catch (Exception e) {
+            json = RestfulRetUtils.getErrorMsg("200013", "设置租户管理员失败");
+            logger.error(e.getMessage(), e);
+        }
+        return json;
+    }
+
+    /**
      * 获取待办任务数量
      * @param request
      * @param params
