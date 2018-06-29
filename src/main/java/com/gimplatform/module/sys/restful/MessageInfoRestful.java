@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.alibaba.fastjson.JSONObject;
 import com.gimplatform.core.entity.UserInfo;
+import com.gimplatform.core.utils.BeanUtils;
 import com.gimplatform.core.utils.RestfulRetUtils;
 import com.gimplatform.core.utils.SessionUtils;
 
@@ -66,9 +67,7 @@ public class MessageInfoRestful {
                 json = RestfulRetUtils.getErrorNoUser();
             else {
                 Pageable pageable = new PageRequest(SessionUtils.getPageIndex(request), SessionUtils.getPageSize(request));
-                MessageInfo messageInfo = new MessageInfo();
-                messageInfo.setMsgTitle(MapUtils.getString(params, "msgTitle"));
-                messageInfo.setMsgType(MapUtils.getString(params, "msgType"));
+                MessageInfo messageInfo = (MessageInfo) BeanUtils.mapToBean(params, MessageInfo.class);
                 json = messageInfoService.getList(pageable, messageInfo, params);
             }
         } catch (Exception e) {
@@ -92,12 +91,7 @@ public class MessageInfoRestful {
             if (userInfo == null)
                 json = RestfulRetUtils.getErrorNoUser();
             else {
-                MessageInfo messageInfo = new MessageInfo();
-                messageInfo.setMsgTitle(MapUtils.getString(params, "msgTitle"));
-                messageInfo.setMsgContent(MapUtils.getString(params, "msgContent"));
-                messageInfo.setMsgType(MapUtils.getString(params, "msgType"));
-                messageInfo.setMsgImg(MapUtils.getString(params, "msgImg"));
-                messageInfo.setMsgFile(MapUtils.getString(params, "msgFile"));
+                MessageInfo messageInfo = (MessageInfo) BeanUtils.mapToBean(params, MessageInfo.class);
                 String userIdList = MapUtils.getString(params, "userIdList");
                 json = messageInfoService.add(messageInfo, userInfo, userIdList, "1".equals(messageInfo.getMsgType()), false);
             }
@@ -122,13 +116,7 @@ public class MessageInfoRestful {
             if (userInfo == null)
                 json = RestfulRetUtils.getErrorNoUser();
             else {
-                MessageInfo messageInfo = new MessageInfo();
-                messageInfo.setMsgId(MapUtils.getLong(params, "msgId"));
-                messageInfo.setMsgTitle(MapUtils.getString(params, "msgTitle"));
-                messageInfo.setMsgContent(MapUtils.getString(params, "msgContent"));
-                messageInfo.setMsgType(MapUtils.getString(params, "msgType"));
-                messageInfo.setMsgImg(MapUtils.getString(params, "msgImg"));
-                messageInfo.setMsgFile(MapUtils.getString(params, "msgFile"));
+                MessageInfo messageInfo =  (MessageInfo) BeanUtils.mapToBean(params, MessageInfo.class);
                 String userIdList = MapUtils.getString(params, "userIdList");
                 json = messageInfoService.edit(messageInfo, userInfo, userIdList, "1".equals(messageInfo.getMsgType()));
             }

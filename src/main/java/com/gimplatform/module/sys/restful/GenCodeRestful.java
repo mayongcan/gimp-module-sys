@@ -27,6 +27,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.gimplatform.core.entity.UserInfo;
 import com.gimplatform.core.generator.GeneratorApi;
 import com.gimplatform.core.generator.GeneratorProperties;
+import com.gimplatform.core.utils.BeanUtils;
 import com.gimplatform.core.utils.DateUtils;
 import com.gimplatform.core.utils.FileUtils;
 import com.gimplatform.core.utils.JsonUtils;
@@ -87,18 +88,7 @@ public class GenCodeRestful {
                 json = RestfulRetUtils.getErrorNoUser();
             else {
                 Pageable pageable = new PageRequest(SessionUtils.getPageIndex(request), SessionUtils.getPageSize(request));
-                GenCode genCode = new GenCode();
-                genCode.setModuleName(MapUtils.getString(params, "moduleName"));
-                genCode.setBasePackage(MapUtils.getString(params, "basePackage"));
-                genCode.setSubPackage(MapUtils.getString(params, "subPackage"));
-                genCode.setJdbcDriver(MapUtils.getString(params, "jdbcDriver"));
-                genCode.setJdbcUrl(MapUtils.getString(params, "jdbcUrl"));
-                genCode.setJdbcUsername(MapUtils.getString(params, "jdbcUsername"));
-                genCode.setJdbcPassword(MapUtils.getString(params, "jdbcPassword"));
-                genCode.setTableName(MapUtils.getString(params, "tableName"));
-                genCode.setTableDesc(MapUtils.getString(params, "tableDesc"));
-                genCode.setPageType(MapUtils.getString(params, "pageType"));
-                genCode.setIsValid(MapUtils.getString(params, "isValid"));
+                GenCode genCode = (GenCode) BeanUtils.mapToBean(params, GenCode.class);
                 json = genCodeService.getList(pageable, genCode);
             }
         } catch (Exception e) {

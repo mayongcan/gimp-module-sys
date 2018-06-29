@@ -25,7 +25,7 @@ import com.gimplatform.core.entity.scheduler.QrtzFiredDetails;
 import com.gimplatform.core.entity.scheduler.RestfulInfo;
 import com.gimplatform.core.entity.scheduler.TriggerInfo;
 import com.gimplatform.core.service.SchedulerService;
-import com.gimplatform.core.utils.DateUtils;
+import com.gimplatform.core.utils.BeanUtils;
 import com.gimplatform.core.utils.RestfulRetUtils;
 import com.gimplatform.core.utils.SchedulerUtils;
 import com.gimplatform.core.utils.SessionUtils;
@@ -115,12 +115,6 @@ public class SchedulerRestful {
             if (userInfo == null)
                 json = RestfulRetUtils.getErrorNoUser();
             else {
-                // //先删除旧的
-                // String oldName = request.getParameter("oldName");
-                // String oldGroup = request.getParameter("oldGroup");
-                // if(!StringUtils.isBlank(oldName) && !StringUtils.isBlank(oldGroup)){
-                // SchedulerUtils.deleteJob(oldName, oldGroup);
-                // }
                 json = schedulerService.saveProcJob(userInfo, procInfo);
             }
         } catch (Exception e) {
@@ -171,12 +165,6 @@ public class SchedulerRestful {
             if (userInfo == null)
                 json = RestfulRetUtils.getErrorNoUser();
             else {
-                // //先删除旧的
-                // String oldName = request.getParameter("oldName");
-                // String oldGroup = request.getParameter("oldGroup");
-                // if(!StringUtils.isBlank(oldName) && !StringUtils.isBlank(oldGroup)){
-                // SchedulerUtils.deleteJob(oldName, oldGroup);
-                // }
                 json = schedulerService.saveRestfulJob(userInfo, restfulInfo);
             }
         } catch (Exception e) {
@@ -227,12 +215,6 @@ public class SchedulerRestful {
             if (userInfo == null)
                 json = RestfulRetUtils.getErrorNoUser();
             else {
-                // //先删除旧的
-                // String oldName = request.getParameter("oldName");
-                // String oldGroup = request.getParameter("oldGroup");
-                // if(!StringUtils.isBlank(oldName) && !StringUtils.isBlank(oldGroup)){
-                // SchedulerUtils.deleteJob(oldName, oldGroup);
-                // }
                 json = schedulerService.saveCustomJob(userInfo, jobInfo);
             }
         } catch (Exception e) {
@@ -364,13 +346,7 @@ public class SchedulerRestful {
             if (userInfo == null)
                 json = RestfulRetUtils.getErrorNoUser();
             else {
-                ProcInfo procInfo = new ProcInfo();
-                procInfo.setDbType(MapUtils.getString(params, "dbType"));
-                procInfo.setDbUrl(MapUtils.getString(params, "dbUrl"));
-                procInfo.setDbUser(MapUtils.getString(params, "dbUser"));
-                procInfo.setDbPwd(MapUtils.getString(params, "dbPwd"));
-                procInfo.setDbName(MapUtils.getString(params, "dbName"));
-                procInfo.setProcName(MapUtils.getString(params, "procName"));
+                ProcInfo procInfo = (ProcInfo) BeanUtils.mapToBean(params, ProcInfo.class);
                 json = schedulerService.getProcParams(procInfo);
             }
         } catch (Exception e) {
@@ -505,11 +481,7 @@ public class SchedulerRestful {
                 json = RestfulRetUtils.getErrorNoUser();
             else {
                 Pageable pageable = new PageRequest(SessionUtils.getPageIndex(request), SessionUtils.getPageSize(request));
-                QrtzFiredDetails qrtzFiredDetails = new QrtzFiredDetails();
-                qrtzFiredDetails.setJobName(MapUtils.getString(params, "jobName"));
-                qrtzFiredDetails.setJobGroup(MapUtils.getString(params, "jobGroup"));
-                qrtzFiredDetails.setStartDate(DateUtils.parseDate(MapUtils.getString(params, "startDate")));
-                qrtzFiredDetails.setEndDate(DateUtils.parseDate(MapUtils.getString(params, "endDate")));
+                QrtzFiredDetails qrtzFiredDetails = (QrtzFiredDetails) BeanUtils.mapToBean(params, QrtzFiredDetails.class);
                 json = schedulerService.getJobHistory(pageable, qrtzFiredDetails);
             }
         } catch (Exception e) {

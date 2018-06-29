@@ -56,16 +56,11 @@ public class LogRestful {
                 json = RestfulRetUtils.getErrorNoUser();
             else {
                 Pageable pageable = new PageRequest(SessionUtils.getPageIndex(request), SessionUtils.getPageSize(request));
-                String searchTitle = MapUtils.getString(params, "searchTitle");
-                String searchBeginTime = MapUtils.getString(params, "searchBeginTime");
-                String searchEndTime = MapUtils.getString(params, "searchEndTime");
                 Long tenantsId = MapUtils.getLong(params, "tenantsId");
-                if (tenantsId == null)
-                    tenantsId = userInfo.getTenantsId();
+                if (tenantsId == null)  params.put("tenantsId", userInfo.getTenantsId());
                 Long organizerId = MapUtils.getLong(params, "organizerId");
-                if (organizerId == null)
-                    organizerId = userInfo.getOrganizerId();
-                json = logInfoService.getLogList(pageable, userInfo, tenantsId, organizerId, searchTitle, searchBeginTime, searchEndTime);
+                if (organizerId == null) params.put("organizerId", userInfo.getOrganizerId());
+                json = logInfoService.getLogList(pageable, userInfo, params);
             }
         } catch (Exception e) {
             json = RestfulRetUtils.getErrorMsg("27001", "获取日志列表失败");

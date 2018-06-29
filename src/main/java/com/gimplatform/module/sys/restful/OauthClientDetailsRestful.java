@@ -21,6 +21,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.gimplatform.core.entity.OauthClientDetails;
 import com.gimplatform.core.entity.UserInfo;
 import com.gimplatform.core.service.OauthClientDetailsService;
+import com.gimplatform.core.utils.BeanUtils;
 import com.gimplatform.core.utils.RestfulRetUtils;
 import com.gimplatform.core.utils.SessionUtils;
 
@@ -109,14 +110,7 @@ public class OauthClientDetailsRestful {
             if (userInfo == null)
                 json = RestfulRetUtils.getErrorNoUser();
             else {
-                OauthClientDetails oauthClientDetails = new OauthClientDetails();
-                oauthClientDetails.setClientId(MapUtils.getString(params, "clientId"));
-                oauthClientDetails.setResourceIds(MapUtils.getString(params, "resourceIds"));
-                oauthClientDetails.setClientSecret(MapUtils.getString(params, "clientSecret"));
-                oauthClientDetails.setScope(MapUtils.getString(params, "scope"));
-                oauthClientDetails.setAuthorizedGrantTypes(MapUtils.getString(params, "authorizedGrantTypes"));
-                oauthClientDetails.setAccessTokenValidity(MapUtils.getLong(params, "accessTokenValidity"));
-                oauthClientDetails.setRefreshTokenValidity(MapUtils.getLong(params, "refreshTokenValidity"));
+                OauthClientDetails oauthClientDetails = (OauthClientDetails) BeanUtils.mapToBean(params, OauthClientDetails.class);
                 json = oauthClientDetailsService.editOauthClient(oauthClientDetails, userInfo, MapUtils.getString(params, "oldClientId"));
             }
         } catch (Exception e) {
